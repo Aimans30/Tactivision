@@ -24,10 +24,9 @@ COPY web ./web
 COPY configs ./configs
 COPY scripts ./scripts
 COPY deploy ./deploy
-COPY data/raw/.gitkeep data/raw/.gitkeep
-COPY data/processed/.gitkeep data/processed/.gitkeep
-COPY data/interim/.gitkeep data/interim/.gitkeep
-COPY data/annotations/.gitkeep data/annotations/.gitkeep
+
+# data/* is gitignored / dockerignored; create runtime dirs in-image.
+RUN mkdir -p data/raw/uploads data/processed data/interim data/annotations
 
 # Prefer headless OpenCV in containers; pyproject pulls opencv-python.
 RUN pip install --upgrade pip \
