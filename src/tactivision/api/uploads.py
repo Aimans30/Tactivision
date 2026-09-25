@@ -23,6 +23,27 @@ MAX_UPLOAD_BYTES = int(os.environ.get("TACTIVISION_MAX_UPLOAD_MB", "500")) * 102
 DEFAULT_MAX_SECONDS = 30
 MAX_MAX_SECONDS = 300
 
+# Cloud/free-tier deploys default to dashboard-only (no YOLO weights / GPU).
+_UPLOADS_FLAG = os.environ.get("TACTIVISION_UPLOADS_ENABLED", "1").strip().lower()
+UPLOADS_ENABLED = _UPLOADS_FLAG not in {"0", "false", "no", "off"}
+
+
+def uploads_disabled_reason() -> str | None:
+    """Return a public error string when browser upload processing is unavailable."""
+    if not UPLOADS_ENABLED:
+        return (
+            "Video upload processing is disabled on this deployment "
+            "(TACTIVISION_UPLOADS_ENABLED=0). Run the dashboard locally with "
+            "model weights to process new clips."
+        )
+    player = PROJECT_ROOT / "models" / "detection" / "yolo11n.pt"
+    if not player.is_file():
+        return (
+            "Detection model weights are missing (models/detection/yolo11n.pt). "
+            "Upload processing requires local model weights."
+        )
+    return None
+
 _SAFE_NAME = re.compile(r"[^A-Za-z0-9._-]+")
 
 

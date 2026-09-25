@@ -1,0 +1,11 @@
+{
+  "video": "short_green.mp4",
+  "model": "models/detection/yolo11n.pt",
+  "tracker": "bytetrack.yaml",
+  "device": "cuda:0",
+  "max_seconds": 2.0,
+  "frames": 20,
+  "track_boxes": 0,
+  "unique_track_ids": 0,
+  "preview": null
+}

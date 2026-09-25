@@ -1,0 +1,45 @@
+{
+  "metric_type": "estimated_model_derived",
+  "coordinate_system": "statsbomb_120x80_yards",
+  "coordinates": "smoothed",
+  "min_players_required": 3,
+  "formulas": {
+    "centroid": "mean(x), mean(y) over valid players on that team at the timestamp",
+    "width": "max(x) - min(x)",
+    "length": "max(y) - min(y)",
+    "compactness": "mean Euclidean distance of players from the team centroid"
+  },
+  "axis_note": "StatsBomb frame: x in [0, 120] along pitch length, y in [0, 80] along pitch width. This module follows the requested formulas (width on x, length on y).",
+  "timestamps_total": 0,
+  "timestamps_both_teams_valid": 0,
+  "tracks_with_team_label": 0,
+  "team_label_counts": {},
+  "teams": {
+    "0": {
+      "valid_samples": 0,
+      "invalid_or_insufficient_samples": 0,
+      "n_players": null,
+      "centroid_x": null,
+      "centroid_y": null,
+      "width": null,
+      "length": null,
+      "compactness": null
+    },
+    "1": {
+      "valid_samples": 0,
+      "invalid_or_insufficient_samples": 0,
+      "n_players": null,
+      "centroid_x": null,
+      "centroid_y": null,
+      "width": null,
+      "length": null,
+      "compactness": null
+    }
+  },
+  "ground_truth": false,
+  "identity_note": "Team labels come from kit-color clustering on filtered tracks. Track IDs are not persistent player identities; counts are not guaranteed to be 11.",
+  "sources": {
+    "trajectories": "data/processed/short_sparse/pitch_trajectories.jsonl",
+    "player_filter": "data/processed/short_sparse/player_filter.json"
+  }
+}

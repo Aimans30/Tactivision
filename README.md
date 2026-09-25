@@ -107,6 +107,20 @@ Details: [docs/EVALUATION.md](docs/EVALUATION.md).
 | [docs/EVALUATION.md](docs/EVALUATION.md) | Tracking / calibration / ball evaluation |
 | [docs/DECISIONS.md](docs/DECISIONS.md) | Technical decisions |
 | [docs/LIMITATIONS.md](docs/LIMITATIONS.md) | Known failure modes |
+| [docs/DEPLOY.md](docs/DEPLOY.md) | Render + Docker deployment |
+
+## Deploy (Render + Docker)
+
+Cloud deploy is **dashboard-first**: API + UI + a seeded demo run. Full CV / browser
+upload stays local (YOLO weights are not in the Docker image).
+
+```bash
+docker build -t tactivision .
+docker run --rm -p 8000:8000 tactivision
+```
+
+On Render: **New → Blueprint** and select this repo (`render.yaml`), or create a
+Docker web service with health check `/api/health`. Details: [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## Tests
 

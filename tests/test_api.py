@@ -27,7 +27,9 @@ def test_health(client: TestClient):
     assert body["status"] == "ok"
     assert body["processed_root"] == "data/processed"
     assert "C:" not in body["processed_root"]
-
+    assert "uploads_enabled" in body
+    assert "bundle_runs" in body
+    assert isinstance(body["bundle_runs"], int)
 
 def test_list_matches(client: TestClient):
     response = client.get("/api/matches")

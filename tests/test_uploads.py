@@ -78,6 +78,17 @@ def test_public_error_strips_paths():
     assert "traceback" not in msg.lower()
 
 
+def test_upload_disabled_returns_503(client: TestClient):
+    with patch("tactivision.api.app.uploads_disabled_reason", return_value="uploads off"):
+        res = client.post(
+            "/api/runs",
+            files={"video": ("clip.mp4", b"bytes", "video/mp4")},
+            data={"max_seconds": "5"},
+        )
+    assert res.status_code == 503
+    assert "uploads off" in res.json()["detail"]
+
+
 def test_upload_missing_file(client: TestClient):
     res = client.post("/api/runs", data={"max_seconds": "5"})
     assert res.status_code in {400, 422}
@@ -96,11 +107,12 @@ def test_upload_unsupported_extension(client: TestClient):
 
 
 def test_upload_empty_file(client: TestClient):
-    res = client.post(
-        "/api/runs",
-        files={"video": ("empty.mp4", b"", "video/mp4")},
-        data={"max_seconds": "5"},
-    )
+    with patch("tactivision.api.app.uploads_disabled_reason", return_value=None):
+        res = client.post(
+            "/api/runs",
+            files={"video": ("empty.mp4", b"", "video/mp4")},
+            data={"max_seconds": "5"},
+        )
     assert res.status_code == 400
     detail = res.json()["detail"]
     assert "empty" in detail.lower() or "unreadable" in detail.lower() or "missing" in detail.lower()
@@ -121,6 +133,7 @@ def test_upload_success_mocked(client: TestClient, tmp_path: Path):
             return fake_meta
 
     with (
+        patch("tactivision.api.app.uploads_disabled_reason", return_value=None),
         patch("tactivision.api.app.VideoReader", return_value=FakeReader()),
         patch(
             "tactivision.api.app.run_match_pipeline",
@@ -171,6 +184,7 @@ def test_upload_pipeline_failure(client: TestClient, tmp_path: Path):
             return fake_meta
 
     with (
+        patch("tactivision.api.app.uploads_disabled_reason", return_value=None),
         patch("tactivision.api.app.VideoReader", return_value=FakeReader()),
         patch(
             "tactivision.api.app.run_match_pipeline",

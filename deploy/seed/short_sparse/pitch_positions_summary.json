@@ -1,0 +1,20 @@
+{
+  "metric_type": "estimated_model_derived",
+  "coordinate_system": "statsbomb_120x80_yards",
+  "calibration_source": "per_frame",
+  "interpolation": false,
+  "total_frames": 20,
+  "calibrated_frames": 0,
+  "invalid_or_uncalibrated_frames": 20,
+  "player_coordinate_samples": 0,
+  "reprojection_error_on_calibrated_frames": {
+    "count": 0,
+    "minimum": null,
+    "median": null,
+    "maximum": null
+  },
+  "note": "Player pitch positions use stored per-frame homographies only. Homographies are not interpolated. Invalid calibration frames have no player coordinates.",
+  "tracks_source": "data/processed/short_sparse/tracks.jsonl",
+  "calibration_source_path": "data/processed/short_sparse/calibration/per_frame/calibration.jsonl",
+  "output": "data/processed/short_sparse/pitch_positions.jsonl"
+}

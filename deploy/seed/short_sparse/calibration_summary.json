@@ -1,0 +1,11 @@
+{
+  "coordinate_system": "statsbomb_120x80_yards",
+  "calibration_source": "per_frame",
+  "canonical": true,
+  "per_frame_calibration": "data/processed/short_sparse/calibration/per_frame/calibration.jsonl",
+  "pitch_positions": "data/processed/short_sparse/pitch_positions.jsonl",
+  "calibrated_frames": 0,
+  "total_frames": 20,
+  "player_coordinate_samples": 0,
+  "interpolation": false
+}

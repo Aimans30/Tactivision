@@ -1,0 +1,1 @@
+frame,timestamp,metric_type,coordinate_system,coordinates,min_players_required,team0_valid,team0_n_available,team0_n_players,team0_centroid_x,team0_centroid_y,team0_width,team0_length,team0_compactness,team1_valid,team1_n_available,team1_n_players,team1_centroid_x,team1_centroid_y,team1_width,team1_length,team1_compactness

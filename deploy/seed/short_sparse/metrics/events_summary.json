@@ -1,0 +1,8 @@
+{
+  "metric_type": "heuristic_estimate",
+  "provenance": "heuristic_estimate",
+  "ground_truth": false,
+  "total_events": 0,
+  "by_type": {},
+  "note": "Pass/carry/progression/recovery are proximity heuristics on sparse player\u2013ball joins. Do not treat counts as official match events."
+}

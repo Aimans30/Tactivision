@@ -1,0 +1,13 @@
+{
+  "metric_type": "heuristic_estimate",
+  "provenance": "heuristic_estimate",
+  "ground_truth": false,
+  "frames": 20,
+  "state_counts": {
+    "ball_missing": 20
+  },
+  "lateral_bias_counts": {
+    "central": 20
+  },
+  "note": "Counts cover possession timeline frames, including unavailable/unknown."
+}

@@ -20,6 +20,7 @@ from tactivision.api.uploads import (
     ALLOWED_EXTENSIONS,
     DEFAULT_MAX_SECONDS,
     MAX_UPLOAD_BYTES,
+    UPLOADS_ENABLED,
     ensure_run_slot_free,
     extension_allowed,
     new_upload_run_id,
@@ -27,6 +28,7 @@ from tactivision.api.uploads import (
     public_error_message,
     sanitize_upload_filename,
     upload_destination,
+    uploads_disabled_reason,
 )
 from tactivision.pipeline.match_pipeline import run_match_pipeline
 from tactivision.video.reader import VideoReader
@@ -135,7 +137,19 @@ def _match_list_entry(path: Path) -> dict:
 
 @app.get("/api/health")
 def health() -> dict:
-    return {"status": "ok", "processed_root": "data/processed"}
+    demo_runs = 0
+    if PROCESSED.exists():
+        demo_runs = sum(
+            1
+            for path in PROCESSED.iterdir()
+            if path.is_dir() and not path.name.startswith("_") and (path / "match_bundle.json").exists()
+        )
+    return {
+        "status": "ok",
+        "processed_root": "data/processed",
+        "uploads_enabled": UPLOADS_ENABLED and uploads_disabled_reason() is None,
+        "bundle_runs": demo_runs,
+    }
 
 
 @app.get("/api/matches")
@@ -269,6 +283,7 @@ async def create_run_from_upload(
     """Upload a local football clip and run the canonical match pipeline (blocking).
 
     Portfolio/demo only: the HTTP request waits until processing finishes.
+    Disabled on cloud deploys without model weights (see TACTIVISION_UPLOADS_ENABLED).
     """
     try:
         original_name = sanitize_upload_filename(video.filename)
@@ -280,6 +295,10 @@ async def create_run_from_upload(
             400,
             "Unsupported video type. Allowed: " + ", ".join(sorted(ALLOWED_EXTENSIONS)),
         )
+
+    blocked = uploads_disabled_reason()
+    if blocked:
+        raise HTTPException(503, blocked)
 
     try:
         limit = parse_max_seconds(max_seconds)

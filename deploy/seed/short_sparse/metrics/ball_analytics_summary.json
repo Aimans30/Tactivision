@@ -1,0 +1,28 @@
+{
+  "metric_type": "model_derived_analytic",
+  "provenance": "model_derived_analytic",
+  "ground_truth": false,
+  "coordinate_system": "statsbomb_120x80_yards",
+  "total_frames": 20,
+  "frames_with_pitch_ball": 0,
+  "pitch_coverage_percent": 0.0,
+  "segments": 0,
+  "longest_segment_frames": null,
+  "longest_segment_seconds": null,
+  "missing_intervals": 1,
+  "missing_frames": 20,
+  "speed_samples": 0,
+  "median_speed_yards_per_second": null,
+  "max_speed_yards_per_second": null,
+  "note": "Speeds use consecutive pitch-valid frames only. Missing detections are not interpolated.",
+  "segment_table": [],
+  "gap_table": [
+    {
+      "start_frame": 0,
+      "end_frame": 19,
+      "start_time": 0.0,
+      "end_time": 1.9,
+      "frames": 20
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "run_id": "short_sparse",
+  "run_dir": "data/processed/short_sparse",
+  "video": "data/processed/_fixtures/short_green.mp4",
+  "max_seconds": 2.0,
+  "runtime_seconds": 30.94,
+  "stages": {
+    "metadata": {
+      "video": "short_green.mp4",
+      "fps": 10.0,
+      "width": 128,
+      "height": 96,
+      "duration_seconds": 2.0,
+      "frame_count": 20,
+      "coordinate_system": "statsbomb",
+      "pitch_length": 120.0,
+      "pitch_width": 80.0
+    },
+    "tracking": {
+      "video": "short_green.mp4",
+      "model": "models/detection/yolo11n.pt",
+      "tracker": "bytetrack.yaml",
+      "device": "cuda:0",
+      "max_seconds": 2.0,
+      "frames": 20,
+      "track_boxes": 0,
+      "unique_track_ids": 0,
+      "preview": null
+    },
+    "calibration": {
+      "frames": 20,
+      "calibrated_frames": 0,
+      "calibration_coverage_percent": 0.0,
+      "median_reprojection_error": null,
+      "interpolation": false,
+      "calibration_source": "per_frame",
+      "output": "data/processed/short_sparse/calibration/per_frame/calibration.jsonl"
+    },
+    "pitch_positions": {
+      "metric_type": "estimated_model_derived",
+      "coordinate_system": "statsbomb_120x80_yards",
+      "calibration_source": "per_frame",
+      "interpolation": false,
+      "total_frames": 20,
+      "calibrated_frames": 0,
+      "invalid_or_uncalibrated_frames": 20,
+      "player_coordinate_samples": 0,
+      "reprojection_error_on_calibrated_frames": {
+        "count": 0,
+        "minimum": null,
+        "median": null,
+        "maximum": null
+      },
+      "note": "Player pitch positions use stored per-frame homographies only. Homographies are not interpolated. Invalid calibration frames have no player coordinates.",
+      "tracks_source": "data/processed/short_sparse/tracks.jsonl",
+      "calibration_source_path": "data/processed/short_sparse/calibration/per_frame/calibration.jsonl",
+      "output": "data/processed/short_sparse/pitch_positions.jsonl"
+    },
+    "player_filter": {
+      "tracks_before": 0,
+      "tracks_removed": 0,
+      "tracks_remaining": 0,
+      "removed_by_reason": {},
+      "team_counts": {
+        "0": 0,
+        "1": 0
+      }
+    },
+    "trajectories": {
+      "tracks": 0,
+      "samples": 0,
+      "jumps_removed": 0,
+      "output": "data/processed/short_sparse/pitch_trajectories.jsonl"
+    },
+    "player_metrics": {
+      "metric_type": "estimated_model_derived",
+      "coordinate_system": "statsbomb_120x80_yards",
+      "coordinates": "smoothed",
+      "max_gap_seconds": 0.75,
+      "tracks_measured": 0,
+      "distance_yards": null,
+      "mean_speed_yards_per_second": null
+    },
+    "team_shape": {
+      "metric_type": "estimated_model_derived",
+      "coordinate_system": "statsbomb_120x80_yards",
+      "coordinates": "smoothed",
+      "min_players_required": 3,
+      "formulas": {
+        "centroid": "mean(x), mean(y) over valid players on that team at the timestamp",
+        "width": "max(x) - min(x)",
+        "length": "max(y) - min(y)",
+        "compactness": "mean Euclidean distance of players from the team centroid"
+      },
+      "axis_note": "StatsBomb frame: x in [0, 120] along pitch length, y in [0, 80] along pitch width. This module follows the requested formulas (width on x, length on y).",
+      "timestamps_total": 0,
+      "timestamps_both_teams_valid": 0,
+      "tracks_with_team_label": 0,
+      "team_label_counts": {},
+      "teams": {
+        "0": {
+          "valid_samples": 0,
+          "invalid_or_insufficient_samples": 0,
+          "n_players": null,
+          "centroid_x": null,
+          "centroid_y": null,
+          "width": null,
+          "length": null,
+          "compactness": null
+        },
+        "1": {
+          "valid_samples": 0,
+          "invalid_or_insufficient_samples": 0,
+          "n_players": null,
+          "centroid_x": null,
+          "centroid_y": null,
+          "width": null,
+          "length": null,
+          "compactness": null
+        }
+      },
+      "ground_truth": false,
+      "identity_note": "Team labels come from kit-color clustering on filtered tracks. Track IDs are not persistent player identities; counts are not guaranteed to be 11.",
+      "sources": {
+        "trajectories": "data/processed/short_sparse/pitch_trajectories.jsonl",
+        "player_filter": "data/processed/short_sparse/player_filter.json"
+      }
+    },
+    "ball": {
+      "frames_processed": 20,
+      "frames_with_tracked_observation": 0,
+      "detection_coverage_percent": 0.0,
+      "preview": "data/processed/short_sparse/ball/ball_preview.mp4"
+    },
+    "ball_pitch": {
+      "total_frames": 20,
+      "observed_ball_frames": 0,
+      "valid_ball_pitch_projections": 0,
+      "projection_percentage_of_observed": 0.0,
+      "calibration_source": "data/processed/short_sparse/calibration/per_frame/calibration.jsonl",
+      "output": "data/processed/short_sparse/ball/ball_pitch_trajectory_per_frame.jsonl",
+      "interpolation": false
+    },
+    "possession": {
+      "metric_type": "estimated_model_derived",
+      "coordinate_system": "statsbomb_120x80_yards",
+      "ground_truth": false,
+      "method": "nearest_player_within_radius_with_debounce",
+      "possession_radius_yards": 5.0,
+      "debounce_frames": 2,
+      "total_frames": 20,
+      "frames_assigned": 0,
+      "frames_unknown": 0,
+      "frames_unavailable": 20,
+      "possession_coverage_percent": 0.0,
+      "team0_possession_percent_of_all_frames": 0.0,
+      "team1_possession_percent_of_all_frames": 0.0,
+      "unknown_percent_of_all_frames": 0.0,
+      "unavailable_percent_of_all_frames": 100.0,
+      "team0_share_of_assigned_percent": 0.0,
+      "team1_share_of_assigned_percent": 0.0,
+      "possession_transitions": 0,
+      "median_nearest_player_distance_when_assigned": null,
+      "radius_justification": "5.0 StatsBomb yards (~4.6 m): larger than a stride-scale control bubble, smaller than this clip's median nearest-player distance on joinable frames so distant nearest players remain unknown.",
+      "sources": {
+        "ball": "data/processed/short_sparse/ball/ball_pitch_trajectory_per_frame.jsonl",
+        "trajectories": "data/processed/short_sparse/pitch_trajectories.jsonl",
+        "player_filter": "data/processed/short_sparse/player_filter.json"
+      },
+      "player_frames_with_samples": 0
+    },
+    "bundle": {
+      "match_id": "short_sparse",
+      "artifacts": [
+        "metadata",
+        "player_filter",
+        "pitch_trajectories",
+        "player_metrics",
+        "player_metrics_summary",
+        "team_shape",
+        "team_shape_summary",
+        "possession",
+        "possession_summary",
+        "ball_pitch",
+        "ball_tracking_summary",
+        "ball_analytics_summary",
+        "events",
+        "events_summary",
+        "tactical_states",
+        "tactical_states_summary",
+        "formation_summary",
+        "formation_frames",
+        "possession_viz",
+        "pipeline_summary"
+      ],
+      "summaries": [
+        "possession",
+        "player_metrics",
+        "team_shape",
+        "ball",
+        "events",
+        "tactics",
+        "formation"
+      ]
+    }
+  },
+  "match_bundle": "data/processed/short_sparse/match_bundle.json"
+}

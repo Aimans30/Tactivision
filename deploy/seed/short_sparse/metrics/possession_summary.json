@@ -1,0 +1,28 @@
+{
+  "metric_type": "estimated_model_derived",
+  "coordinate_system": "statsbomb_120x80_yards",
+  "ground_truth": false,
+  "method": "nearest_player_within_radius_with_debounce",
+  "possession_radius_yards": 5.0,
+  "debounce_frames": 2,
+  "total_frames": 20,
+  "frames_assigned": 0,
+  "frames_unknown": 0,
+  "frames_unavailable": 20,
+  "possession_coverage_percent": 0.0,
+  "team0_possession_percent_of_all_frames": 0.0,
+  "team1_possession_percent_of_all_frames": 0.0,
+  "unknown_percent_of_all_frames": 0.0,
+  "unavailable_percent_of_all_frames": 100.0,
+  "team0_share_of_assigned_percent": 0.0,
+  "team1_share_of_assigned_percent": 0.0,
+  "possession_transitions": 0,
+  "median_nearest_player_distance_when_assigned": null,
+  "radius_justification": "5.0 StatsBomb yards (~4.6 m): larger than a stride-scale control bubble, smaller than this clip's median nearest-player distance on joinable frames so distant nearest players remain unknown.",
+  "sources": {
+    "ball": "data/processed/short_sparse/ball/ball_pitch_trajectory_per_frame.jsonl",
+    "trajectories": "data/processed/short_sparse/pitch_trajectories.jsonl",
+    "player_filter": "data/processed/short_sparse/player_filter.json"
+  },
+  "player_frames_with_samples": 0
+}

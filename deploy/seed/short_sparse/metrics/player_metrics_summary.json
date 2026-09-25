@@ -1,0 +1,9 @@
+{
+  "metric_type": "estimated_model_derived",
+  "coordinate_system": "statsbomb_120x80_yards",
+  "coordinates": "smoothed",
+  "max_gap_seconds": 0.75,
+  "tracks_measured": 0,
+  "distance_yards": null,
+  "mean_speed_yards_per_second": null
+}

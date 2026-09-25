@@ -1,0 +1,6 @@
+{
+  "tracks": 0,
+  "samples": 0,
+  "jumps_removed": 0,
+  "output": "data/processed/short_sparse/pitch_trajectories.jsonl"
+}

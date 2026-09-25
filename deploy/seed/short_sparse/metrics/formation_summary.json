@@ -1,0 +1,11 @@
+{
+  "metric_type": "heuristic_estimate",
+  "provenance": "heuristic_estimate",
+  "ground_truth": false,
+  "frames_evaluated": 0,
+  "modal_shape_by_team": {
+    "0": null,
+    "1": null
+  },
+  "note": "Shape signatures are spatial line-count estimates (back-mid-forward bands), not named formations. Do not report as 4-3-3 unless evidence and confidence explicitly support it \u2014 this pipeline does not claim named formations."
+}

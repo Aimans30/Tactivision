@@ -1,0 +1,21 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Dashboard service (Docker). Uploads/CV are disabled by default on free tier.
+services:
+  - type: web
+    name: tactivision
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: TACTIVISION_UPLOADS_ENABLED
+        value: "0"
+      - key: TACTIVISION_MAX_UPLOAD_MB
+        value: "100"
+      # Optional: set in the Render dashboard if you enable LLM polish locally.
+      # - key: OPENAI_API_KEY
+      #   sync: false

@@ -1,0 +1,9 @@
+{
+  "total_frames": 20,
+  "observed_ball_frames": 0,
+  "valid_ball_pitch_projections": 0,
+  "projection_percentage_of_observed": 0.0,
+  "calibration_source": "data/processed/short_sparse/calibration/per_frame/calibration.jsonl",
+  "output": "data/processed/short_sparse/ball/ball_pitch_trajectory_per_frame.jsonl",
+  "interpolation": false
+}

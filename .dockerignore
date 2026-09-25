@@ -1,0 +1,45 @@
+# Build context exclusions for lean Render/Docker images.
+.git/
+.github/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+htmlcov/
+.coverage
+.coverage.*
+
+# Secrets / local env
+.env
+.env.*
+!.env.example
+
+# Heavy local artifacts (never bake into the image)
+data/raw/
+data/interim/
+data/processed/
+data/annotations/
+data/evaluation/
+models/
+*.pt
+*.pth
+*.onnx
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+
+# Docs / scratch that are not needed at runtime
+archive/
+docs/REPOSITORY_CLEANUP_PLAN.md
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

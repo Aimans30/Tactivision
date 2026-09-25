@@ -1,0 +1,14 @@
+{
+  "video": "short_green.mp4",
+  "fps": 10.0,
+  "width": 128,
+  "height": 96,
+  "duration_seconds": 2.0,
+  "frame_count": 20,
+  "coordinate_system": "statsbomb",
+  "pitch_length": 120.0,
+  "pitch_width": 80.0,
+  "run_id": "short_sparse",
+  "source": "data/processed/_fixtures/short_green.mp4",
+  "source_filename": "short_green.mp4"
+}

@@ -1,0 +1,9 @@
+{
+  "frames": 20,
+  "calibrated_frames": 0,
+  "calibration_coverage_percent": 0.0,
+  "median_reprojection_error": null,
+  "interpolation": false,
+  "calibration_source": "per_frame",
+  "output": "data/processed/short_sparse/calibration/per_frame/calibration.jsonl"
+}
