@@ -1,0 +1,12 @@
+# REFERENCE DEFAULTS — not loaded at runtime by src/ or scripts/.
+# Active CLIs use argparse defaults (and Ultralytics tracker YAMLs).
+# Keep this file aligned with those defaults for documentation only.
+#
+# Player detector weights (repo-relative):
+model: models/detection/yolo11n.pt
+confidence: 0.35
+image_size: 1280
+person_class_id: 0
+player_label: player
+device: auto
+sample_fps: 1.0

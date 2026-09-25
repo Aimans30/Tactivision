@@ -1,0 +1,22 @@
+# REFERENCE DEFAULTS — not loaded at runtime by analytics modules.
+# Heuristic parameters currently live as Python constants in:
+#   spatial/possession.py, analytics/events.py, analytics/tactics.py, analytics/formation.py
+# Keep this file aligned when changing those constants.
+possession:
+  radius_yards: 5.0
+  debounce_frames: 2
+
+events:
+  min_pass_displacement_yards: 4.0
+  min_carry_frames: 3
+  min_carry_displacement_yards: 3.0
+  progression_yards: 8.0
+
+tactics:
+  compact_threshold: 12.0
+  expanded_threshold: 18.0
+
+formation:
+  min_players_for_signature: 5
+
+clip_seconds: 30.0

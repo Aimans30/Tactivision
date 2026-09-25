@@ -1,0 +1,15 @@
+# REFERENCE DEFAULTS — not loaded at runtime by src/ or scripts/.
+# Coordinate system is also written into metadata.json by video ingestion.
+coordinate_system:
+  name: statsbomb
+  length: 120
+  width: 80
+  unit: yards
+
+output_dir: data/processed
+
+# Off by default. A full match at native fps will fill the disk.
+frame_extraction:
+  enabled: false
+  sample_fps: 1.0
+  image_ext: jpg

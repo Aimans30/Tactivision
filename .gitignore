@@ -1,0 +1,50 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Secrets / local env
+.env
+
+# Large / restricted data (keep locally; do not publish)
+data/raw/*
+data/interim/*
+data/processed/*
+data/annotations/*
+data/evaluation/*
+!data/**/.gitkeep
+
+# Model weights and media
+models/**/*.pt
+models/**/*.onnx
+models/**/.cache/
+*.pt
+*.pth
+*.onnx
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+
+# Logs / coverage
+*.log
+.coverage
+.coverage.*
+htmlcov/
+
+# Editors / OS
+.vscode/
+.idea/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# Local env overrides (keep the tracked .env.example)
+.env.*
+!.env.example

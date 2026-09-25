@@ -1,0 +1,10 @@
+# REFERENCE DEFAULTS — not loaded at runtime by src/ or scripts/.
+# Active CLIs use argparse defaults; tracker YAML is Ultralytics' bytetrack.yaml.
+#
+model: models/detection/yolo11n.pt
+tracker: bytetrack.yaml
+confidence: 0.35
+image_size: 1280
+person_class_id: 0
+player_label: player
+device: auto
