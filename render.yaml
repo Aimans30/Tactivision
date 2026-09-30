@@ -16,6 +16,8 @@ services:
         value: "0"
       - key: TACTIVISION_MAX_UPLOAD_MB
         value: "100"
-      # Optional: set in the Render dashboard if you enable LLM polish locally.
-      # - key: OPENAI_API_KEY
+      # Optional: Gemini Ask polish (set as a secret in the Render dashboard).
+      # - key: GEMINI_API_KEY
       #   sync: false
+      # - key: TACTIVISION_LLM_MODEL
+      #   value: gemini-2.0-flash

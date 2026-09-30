@@ -30,6 +30,9 @@ def test_health(client: TestClient):
     assert "uploads_enabled" in body
     assert "bundle_runs" in body
     assert isinstance(body["bundle_runs"], int)
+    assert "llm_polish" in body
+    assert "llm_provider" in body
+
 
 def test_list_matches(client: TestClient):
     response = client.get("/api/matches")

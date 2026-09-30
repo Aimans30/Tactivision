@@ -15,7 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from tactivision.analytics.io import load_csv, load_json, load_jsonl
-from tactivision.analytics.qa import answer_question, load_context
+from tactivision.analytics.qa import answer_question, load_context, llm_api_key
 from tactivision.api.uploads import (
     ALLOWED_EXTENSIONS,
     DEFAULT_MAX_SECONDS,
@@ -149,6 +149,8 @@ def health() -> dict:
         "processed_root": "data/processed",
         "uploads_enabled": UPLOADS_ENABLED and uploads_disabled_reason() is None,
         "bundle_runs": demo_runs,
+        "llm_polish": bool(llm_api_key()),
+        "llm_provider": "gemini" if llm_api_key() else None,
     }
 
 

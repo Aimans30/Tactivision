@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 from tactivision.analytics.ball_metrics import summarize_ball
 from tactivision.analytics.events import detect_events, summarize_events
 from tactivision.analytics.formation import estimate_formation_at_frame
@@ -90,3 +92,56 @@ def test_qa_does_not_invent_when_empty_context():
     answer = answer_question("How did possession change?", {"possession_summary": {"possession_coverage_percent": 2.27, "team0_possession_percent_of_all_frames": 1.0, "team1_possession_percent_of_all_frames": 1.2, "unknown_percent_of_all_frames": 4.0, "possession_transitions": 1, "possession_radius_yards": 5.0, "debounce_frames": 2}})
     assert answer["ground_truth"] is False
     assert any("2.27" in f for f in answer["facts"])
+
+
+def test_qa_gemini_polish_mocked(monkeypatch):
+    from tactivision.analytics import qa as qa_mod
+
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setenv("TACTIVISION_LLM_MODEL", "gemini-2.0-flash")
+
+    class FakeResp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            payload = {
+                "candidates": [
+                    {
+                        "content": {
+                            "parts": [
+                                {
+                                    "text": (
+                                        "Estimated possession coverage is 2.27% of frames "
+                                        "with team0 at 1.0% and team1 at 1.2%. "
+                                        "These are heuristic proximity labels, not official stats."
+                                    )
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+            return json.dumps(payload).encode("utf-8")
+
+    monkeypatch.setattr(qa_mod.urllib.request, "urlopen", lambda *a, **k: FakeResp())
+    answer = answer_question(
+        "How did possession change?",
+        {
+            "possession_summary": {
+                "possession_coverage_percent": 2.27,
+                "team0_possession_percent_of_all_frames": 1.0,
+                "team1_possession_percent_of_all_frames": 1.2,
+                "unknown_percent_of_all_frames": 4.0,
+                "possession_transitions": 1,
+                "possession_radius_yards": 5.0,
+                "debounce_frames": 2,
+            }
+        },
+    )
+    assert answer["llm_provider"] == "gemini"
+    assert "2.27" in answer["narrative"]
+    assert answer["source"] == "deterministic_facts_plus_gemini_wording"

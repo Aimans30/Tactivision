@@ -43,6 +43,15 @@ docker run --rm -p 8000:8000 tactivision
 
 Open http://127.0.0.1:8000 — you should see the seeded `short_sparse` run.
 
+## Optional: Gemini Ask polish
+
+1. Create a free key at https://aistudio.google.com/apikey
+2. Locally: set `GEMINI_API_KEY` in `.env`
+3. On Render: Environment → add `GEMINI_API_KEY` (secret) → redeploy
+4. Optional: `TACTIVISION_LLM_MODEL=gemini-2.0-flash` (default)
+
+Ask still answers from structured analytics; Gemini only rewrites wording.
+
 ## Enabling uploads on a private/paid instance (optional)
 
 Only if you know what you are doing:

@@ -137,4 +137,4 @@ python -m pytest
 | Possession, events, tactics, formation signatures | heuristic estimate |
 | SoccerNet SNMOT GT (eval only) | ground truth |
 
-The Ask panel answers from structured JSON only. It does not invent match statistics. Optional `OPENAI_API_KEY` can polish wording; numbers still come from the analytics bundle.
+The Ask panel answers from structured JSON only. It does not invent match statistics. Optional `GEMINI_API_KEY` (Google AI Studio free tier) can polish wording; numbers still come from the analytics bundle.

@@ -990,7 +990,11 @@ async function init() {
       });
       if (askedFor !== state.matchId) return;
       $("#askOut").innerHTML = `
-        <p class="ask-scope">Answer grounded in <strong>${escapeHtml(askedFor)}</strong> (model-derived / heuristic analytics).</p>
+        <p class="ask-scope">Answer grounded in <strong>${escapeHtml(askedFor)}</strong> (model-derived / heuristic analytics)${
+          ans.llm_provider === "gemini"
+            ? ` · polished by <strong>Gemini</strong> (${escapeHtml(ans.llm_model || "gemini")})`
+            : ""
+        }.</p>
         <p>${escapeHtml(ans.narrative || "")}</p>
         <h3>Facts</h3><ul>${(ans.facts || []).map((f) => `<li>${escapeHtml(f)}</li>`).join("")}</ul>
         <h3>Interpretation</h3><ul>${(ans.interpretation || []).map((f) => `<li>${escapeHtml(f)}</li>`).join("")}</ul>

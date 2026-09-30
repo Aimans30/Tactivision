@@ -1,6 +1,6 @@
 """Natural-language answers over structured match analytics only.
 
-Never invent statistics. Optional LLM polish; deterministic replies by default.
+Never invent statistics. Optional Gemini polish; deterministic replies by default.
 """
 
 from __future__ import annotations
@@ -8,10 +8,16 @@ from __future__ import annotations
 import json
 import os
 import re
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Any
 
 from tactivision.analytics.io import load_json, load_jsonl, load_csv
+
+# Free-tier friendly default; override with TACTIVISION_LLM_MODEL.
+DEFAULT_GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
 
 def load_context(run_dir: Path) -> dict[str, Any]:
@@ -37,6 +43,19 @@ def _maybe_json(path: Path) -> dict | list | None:
     if not path.exists():
         return None
     return load_json(path)
+
+
+def llm_api_key() -> str | None:
+    """Return the configured Gemini API key, if any."""
+    for name in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "TACTIVISION_LLM_API_KEY"):
+        value = os.environ.get(name, "").strip()
+        if value:
+            return value
+    return None
+
+
+def llm_model() -> str:
+    return os.environ.get("TACTIVISION_LLM_MODEL", DEFAULT_GEMINI_MODEL).strip() or DEFAULT_GEMINI_MODEL
 
 
 def answer_question(question: str, context: dict[str, Any]) -> dict:
@@ -158,63 +177,77 @@ def answer_question(question: str, context: dict[str, Any]) -> dict:
         "uncertainty": uncertainty,
         "source": "deterministic_structured_analytics",
         "ground_truth": False,
+        "llm_provider": None,
     }
 
-    # Optional LLM polish — only if key present; still grounded in facts above.
-    api_key = os.environ.get("OPENAI_API_KEY") or os.environ.get("TACTIVISION_LLM_API_KEY")
+    # Optional Gemini polish — only if key present; still grounded in facts above.
+    api_key = llm_api_key()
     if api_key and facts:
-        polished = _llm_polish(question, answer, api_key)
+        polished = _gemini_polish(question, answer, api_key)
         if polished:
             answer["narrative"] = polished
-            answer["source"] = "deterministic_facts_plus_optional_llm_wording"
+            answer["source"] = "deterministic_facts_plus_gemini_wording"
+            answer["llm_provider"] = "gemini"
+            answer["llm_model"] = llm_model()
+        else:
+            answer["narrative"] = _fallback_narrative(facts, interpretation)
     else:
-        answer["narrative"] = " ".join(facts[:3]) + (
-            " " + interpretation[0] if interpretation else ""
-        )
+        answer["narrative"] = _fallback_narrative(facts, interpretation)
     return answer
 
 
-def _llm_polish(question: str, answer: dict, api_key: str) -> str | None:
-    """Best-effort OpenAI chat; fail soft. Does not add new numbers."""
-    try:
-        import urllib.request
+def _fallback_narrative(facts: list[str], interpretation: list[str]) -> str:
+    return " ".join(facts[:3]) + (" " + interpretation[0] if interpretation else "")
 
-        body = {
-            "model": os.environ.get("TACTIVISION_LLM_MODEL", "gpt-4o-mini"),
-            "messages": [
-                {
-                    "role": "system",
-                    "content": (
-                        "You explain TactiVision football analytics. "
-                        "ONLY use the provided facts. Do not invent statistics. "
-                        "Clearly separate measured/model-derived facts from interpretation. "
-                        "Mention uncertainty."
-                    ),
-                },
-                {
-                    "role": "user",
-                    "content": json.dumps({"question": question, "structured": answer}),
-                },
-            ],
-            "temperature": 0.2,
-        }
+
+def _gemini_polish(question: str, answer: dict, api_key: str) -> str | None:
+    """Best-effort Gemini generateContent; fail soft. Does not add new numbers."""
+    model = llm_model()
+    system = (
+        "You explain TactiVision football analytics. "
+        "ONLY use the provided facts. Do not invent statistics, player names, or scores. "
+        "Clearly separate measured/model-derived facts from interpretation. "
+        "Mention uncertainty. Keep the reply concise (3-6 sentences)."
+    )
+    user = json.dumps({"question": question, "structured": answer}, default=str)
+    url = f"{GEMINI_API_BASE}/models/{model}:generateContent"
+    body = {
+        "systemInstruction": {"parts": [{"text": system}]},
+        "contents": [{"role": "user", "parts": [{"text": user}]}],
+        "generationConfig": {"temperature": 0.2, "maxOutputTokens": 512},
+    }
+    try:
         req = urllib.request.Request(
-            "https://api.openai.com/v1/chat/completions",
+            url,
             data=json.dumps(body).encode("utf-8"),
             headers={
-                "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
+                "x-goog-api-key": api_key,
             },
             method="POST",
         )
         with urllib.request.urlopen(req, timeout=30) as resp:
             payload = json.loads(resp.read().decode("utf-8"))
-        text = payload["choices"][0]["message"]["content"]
+        text = _extract_gemini_text(payload)
+        if not text:
+            return None
         # Soft guard: reject replies that invent large new integers not in facts.
         fact_blob = " ".join(answer["facts"])
         for token in re.findall(r"\b\d{2,}\b", text):
             if token not in fact_blob and token not in question:
                 return None
         return text
+    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, KeyError, IndexError, json.JSONDecodeError):
+        return None
     except Exception:
         return None
+
+
+def _extract_gemini_text(payload: dict) -> str | None:
+    candidates = payload.get("candidates") or []
+    if not candidates:
+        return None
+    parts = (((candidates[0] or {}).get("content") or {}).get("parts")) or []
+    chunks = [p.get("text", "") for p in parts if isinstance(p, dict) and p.get("text")]
+    text = "\n".join(chunks).strip()
+    return text or None

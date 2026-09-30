@@ -36,4 +36,4 @@
 
 - No billing, auth, or multi-tenant SaaS features.
 - Dashboard expects a preprocessed match directory; live full-match GPU processing is out of scope for the default demo path.
-- Optional LLM polish requires an API key and still cannot add unseen statistics.
+- Optional Gemini polish (`GEMINI_API_KEY`) requires a Google AI Studio key and still cannot add unseen statistics.
